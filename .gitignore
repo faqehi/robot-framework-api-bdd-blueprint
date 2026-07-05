@@ -1,0 +1,39 @@
+# ============================================================================
+# Robot Framework Execution Artifacts & Metrics
+# ============================================================================
+# Ignore both your local 'results' and 'test-results' run output directories
+results/
+test-results/
+tests/debug/
+
+# Ignore loose logging files generated directly in the workspace root
+log.html
+output.xml
+report.html
+
+# ============================================================================
+# Python Compilation & Environment Cache
+# ============================================================================
+# Ignore Python bytecode compilation caches (__pycache__)
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore your local isolated Python virtual environment dependencies
+venv/
+.venv/
+
+# ============================================================================
+# Core Secrets & Environment Variabels Configuration
+# ============================================================================
+# Protect local runtime secrets from leaking to public cloud repositories
+.env
+.env.local
+
+# ============================================================================
+# Operating System & IDE Garbage Collections
+# ============================================================================
+.DS_Store
+Thumbs.db
+.vscode/
