@@ -1,0 +1,52 @@
+name: API Regression Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: # Allows manual execution trigger via GitHub UI
+
+jobs:
+  test-suite:
+    name: Execute Robot Framework Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Out Repository Code
+        uses: actions/checkout@v4
+
+      - name: Initialize Python Runtime Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Pinned Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Proactive Heroku Gateway Health Check
+        run: |
+          echo "Checking Restful-Booker gateway state and warming up cold-start engines..."
+          for i in {1..6}; do
+            curl -s -o /dev/null -w "%{http_code}" https://herokuapp.com | grep "201" && echo "✅ Gateway is active!" && break
+            echo "⏳ API Gateway warming up... retrying in 10 seconds (Attempt $i/6)"
+            sleep 10
+          done
+
+      - name: Execute Filtered Test Suite
+        env:
+          PYTHONPATH: src
+        run: |
+          # Executes your suite natively while routing test parameters directly into your matrix config
+          robot --variable ENV:test --outputdir test-results/ tests/restful_booker_bdd.robot
+
+      - name: Archive Rich Execution Reports
+        if: always() # Compiles assets even if your automated test cases fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-framework-test-results
+          path: test-results/
+          retention-days: 7

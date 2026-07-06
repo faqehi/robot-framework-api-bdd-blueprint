@@ -45,16 +45,16 @@ This project uses a layered **Separation of Concerns (SoC)** architecture. By sp
 │   │   ├── models/
 │   │   │   └── booking_creation_schema.json   # JSON Schema validation contracts for payload assurance
 │   │   └── resources/
-│   │       ├── base_keywords.resource         # Decoupled BDD step definitions & reusable domain keywords
+│   │       ├── base_keywords.resource         # Unified keyword registry & BDD step definitions
 │   │       └── env_setup.resource             # Session initialization hooks & self-healing auth mechanics
 │   └── utils/
 │       └── DataGenerator.py                   # Dynamic data provisioning factory (Faker-backed payload engine)
 ├── tests/
 │   └── restful_booker_bdd.robot               # Clean Gherkin test scenarios (Strictly business-acceptance-driven)
 ├── test-results/                              # Auto-generated HTML execution logs, visual run reports & metrics
-├── requirements.txt                           # Version-pinned dependency manifest for deterministic environments
-├── setup.sh                                   # One-click Unix platform bootstrapping & environment provisioning
-└── run_tests.sh                               # Parameterized CI/CD-ready test execution orchestrator
+├── requirements.txt                           # Pin-point locked dependency manifest
+├── setup.cmd / setup.sh                       # One-click platform bootstrapping hooks
+└── run_tests.cmd / run_tests.sh               # Parameterized cross-platform test run triggers
 ```
 
 ---
@@ -86,7 +86,7 @@ Open your terminal inside the project root directory and trigger the workspace b
 
 ---
 
-## 🎭 Execution Execution Strategy
+## 🎭 Execution Strategy
 
 The execution scripts safely handle runtime virtual environment scopes and Python system module lookup paths (`PYTHONPATH=src`) under the hood.
 
