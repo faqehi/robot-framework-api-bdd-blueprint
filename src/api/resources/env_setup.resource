@@ -3,9 +3,9 @@ Documentation     Global Environmental Initialization Router.
 ...               Responsible for mapping targeted runtime configurations, 
 ...               registering native Python client classes, and priming auth hooks.
 
-Library           ../src/api/config/environments.py
-Library           ../src/api/clients/BookingClient.py    ${BASE_URL}
-Library           ../src/utils/DataGenerator.py
+Library           ${EXECDIR}/src/api/config/environments.py
+Library           ${EXECDIR}/src/api/clients/BookingClient.py    ${BASE_URL}
+Library           ${EXECDIR}/src/utils/DataGenerator.py
 
 *** Variables ***
 ${ENV}                 test
@@ -23,6 +23,8 @@ Initialize API Testing Matrix
     [Documentation]    Orchestrates global variables and logs an admin auth session 
     ...                automatically before the test execution suites step in.
     Load Environment Configuration
+    # Re-import and overwrite the class instance using our newly mapped ${BASE_URL} matrix value
+    Import Library       ${EXECDIR}/src/api/clients/BookingClient.py    ${BASE_URL}
     Authenticate Admin Session Context
 
 Load Environment Configuration
@@ -36,6 +38,7 @@ Load Environment Configuration
     Set Global Variable    ${ENV_ADMIN_USER}   ${config['admin_user']}
     Set Global Variable    ${ENV_ADMIN_PASS}   ${config['admin_pass']}   
     Log To Console    \n🚀 Target Environment Hook: [${ENV.upper()}] Routing to: ${BASE_URL}
+    Update Client Target Base URL    ${BASE_URL}
 
 Authenticate Admin Session Context
     [Documentation]    Hits POST /auth once globally utilizing runtime configuration parameters.

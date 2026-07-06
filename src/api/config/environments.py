@@ -1,24 +1,28 @@
+import os
+
 ENVIRONMENTS = {
     "test": {
         "base_url": "https://restful-booker.herokuapp.com",
         "api_timeout": 5,
         "debug_mode": True,
-        "admin_user": "admin",
-        "admin_pass": "password123"
+        # Reads securely from system variables; falls back to public mock credentials locally
+        "admin_user": os.getenv("TEST_ADMIN_USER", "admin"),
+        "admin_pass": os.getenv("TEST_ADMIN_PASS", "password123")
     },
     "uat": {
         "base_url": "https://restful-booker.herokuapp.com",
         "api_timeout": 10,
         "debug_mode": True,
-        "admin_user": "admin",
-        "admin_pass": "password123"
+        "admin_user": os.getenv("UAT_ADMIN_USER", "admin"),
+        "admin_pass": os.getenv("UAT_ADMIN_PASS", "password123")
     },
     "live": {
+        # Pro-Tip: In a real enterprise system, never hardcode live secrets as fallback values!
         "base_url": "https://restful-booker.herokuapp.com",
         "api_timeout": 15,
         "debug_mode": False,
-        "admin_user": "admin",
-        "admin_pass": "password123"
+        "admin_user": os.getenv("PROD_ADMIN_USER", "admin"),
+        "admin_pass": os.getenv("PROD_ADMIN_PASS", "password123")
     }
 }
 

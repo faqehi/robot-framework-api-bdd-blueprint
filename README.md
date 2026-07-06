@@ -6,49 +6,55 @@ A production-grade, highly optimized API test automation framework built with Ro
 
 ## 🏗️ Framework Architecture Overview
 
-This project adheres to a strict **Separation of Concerns (SoC)** principle across a three-layer pipeline paradigm to completely decouple business test logic from underlying network layer mutations.
+This project uses a layered **Separation of Concerns (SoC)** architecture. By splitting business-level test scripts from low-level network operations, the framework remains highly scalable, readable, and easy to maintain.
 
 ```text
+  ┌──────────────────────────────────────────────────────────────────┐
+  │  1. THE BUSINESS BEHAVIOR LAYER (tests/)                         │
+  │     Declarative Gherkin scenarios focused strictly on behavior   │
+  └──────────────────────────────┬───────────────────────────────────┘
+                                 │ (Maps steps to keywords)
+                                 ▼
   ┌────────────────────────────────────────────────────────────────┐
-  │  1. THE BUSINESS BEHAVIOR LAYER (.robot)                       │
-  │     Focuses on declarative Gherkin statements (Given/When/Then)│
+  │  2. THE TRANSLATION GLUE LAYER (src/api/resources/)            │
+  │     Custom BDD step definitions, state tracking & assertions   │
   └──────────────────────────────┬─────────────────────────────────┘
-                                 │ (Routes actions)
+                                 │ (Calls core client methods)
                                  ▼
-  ┌──────────────────────────────────────────────────────────────┐
-  │  2. THE TRANSLATION ORCHESTRATION LAYER (.resource)          │
-  │     Variables caching, assertions mapping, & JSON validation │
-  └──────────────────────────────┬───────────────────────────────┘
-                                 │ (Passes type-safe objects)
+  ┌────────────────────────────────────────────────────────────────┐
+  │  3. THE CODE ENGINE SDK CLIENTS (src/api/clients/)             │
+  │     Encapsulated requests.Session & persistent token handling  │
+  └──────────────────────────────┬─────────────────────────────────┘
+                                 │ (Hydrates payloads)
                                  ▼
-  ┌──────────────────────────────────────────────────────────────┐
-  │  3. THE CUSTOM CODE ENGINE SDK LAYER (.py Python Client)     │
-  │     Encapsulated requests.Session, automated token injection │
-  └──────────────────────────────────────────────────────────────┘
+  ┌────────────────────────────────────────────────────────────────┐
+  │  4. STATELESS UTILITIES PLATFORM (src/utils/)                  │
+  │     Faker-backed runtime data generators & helper functions    │
+  └────────────────────────────────────────────────────────────────┘
 ```
 
 ### 📁 Directory Layout Blueprint
 
 ```text
-robot-framework-api/
 ├── src/
-│   └── api/
-│       ├── clients/
-│       │   └── BookingClient.py               # Python SDK HTTP verb layer abstractions
-│       ├── models/
-│       │   └── booking_creation_schema.json   # Rigid JSON Schema contract validations
-│       └── config/
-│           └── environments.py                # Multi-env matrix routing (Test, UAT, Live)
+│   ├── api/
+│   │   ├── clients/
+│   │   │   └── BookingClient.py               # Low-level Python HTTP client & SDK verb abstractions
+│   │   ├── config/
+│   │   │   └── environments.py                # Multi-environment matrix routing configuration (Test, UAT, Prod)
+│   │   ├── models/
+│   │   │   └── booking_creation_schema.json   # JSON Schema validation contracts for payload assurance
+│   │   └── resources/
+│   │       ├── base_keywords.resource         # Decoupled BDD step definitions & reusable domain keywords
+│   │       └── env_setup.resource             # Session initialization hooks & self-healing auth mechanics
 │   └── utils/
-│       └── DataGenerator.py                   # Dynamic payload factories (Faker Engine)
+│       └── DataGenerator.py                   # Dynamic data provisioning factory (Faker-backed payload engine)
 ├── tests/
-│   ├── base_keywords.resource                 # Unified keyword registry & BDD step definitions
-│   ├── env_setup.resource                     # Environment initialization & self-healing auth engine
-│   └── restful_booker_bdd.robot               # Explicit business acceptance criteria tests
-├── test-results/                              # Auto-generated rich visual run reports & metrics
-├── requirements.txt                           # Pin-point locked dependency manifest
-├── setup.cmd / setup.sh                       # One-click platform bootstrapping hooks
-└── run_tests.cmd / run_tests.sh               # Parameterized cross-platform test run triggers
+│   └── restful_booker_bdd.robot               # Clean Gherkin test scenarios (Strictly business-acceptance-driven)
+├── test-results/                              # Auto-generated HTML execution logs, visual run reports & metrics
+├── requirements.txt                           # Version-pinned dependency manifest for deterministic environments
+├── setup.sh                                   # One-click Unix platform bootstrapping & environment provisioning
+└── run_tests.sh                               # Parameterized CI/CD-ready test execution orchestrator
 ```
 
 ---

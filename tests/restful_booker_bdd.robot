@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation     BDD Test Suite for Restful-Booker API Gateway.
 ...               Adheres strictly to the Gherkin syntax structure.
-Resource          base_keywords.resource
+Resource          ${EXECDIR}/src/api/resources/base_keywords.resource
 Test Tags        API    RestfulBooker
 
 Suite Setup       Initialize API Testing Matrix

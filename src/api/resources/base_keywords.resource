@@ -40,7 +40,7 @@ Verify Response Data Contract Schema
     [Documentation]    Ensures structural data integrity by validating the response payload
     ...                against a pre-defined JSON Schema model contract.
     [Arguments]    ${response}    ${schema_filename}
-    ${schema_path}=    Set Variable    ${CURDIR}/../src/api/models/${schema_filename}
+    ${schema_path}=    Set Variable    ${EXECDIR}/src/api/models/${schema_filename}
     
     File Should Exist    ${schema_path}
     ...    msg=The specified JSON schema model definition file could not be located at: ${schema_path}

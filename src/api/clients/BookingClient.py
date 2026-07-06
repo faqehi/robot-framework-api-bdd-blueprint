@@ -18,6 +18,15 @@ class BookingClient:
             "Accept": "application/json"
         })
 
+    @keyword("Update Client Target Base URL")
+    def update_client_target_base_url(self, new_url: str) -> None:
+        """
+        Dynamically shifts the target gateway URL mid-execution suite.
+        Ensures multi-environment test matrix routes traffic correctly.
+        """
+        self.base_url = new_url.rstrip('/')
+        self.session.cookies.clear()
+
     @keyword("Create Authentication Token")
     def create_authentication_token(self, payload: Dict[str, str]) -> requests.Response:
         """
