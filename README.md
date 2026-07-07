@@ -1,6 +1,6 @@
 # 🎭 Restful-Booker BDD API Test Automation Framework
 
-A production-grade, highly optimized API test automation framework built with Robot Framework targeting the Restful-Booker platform. This architecture transitions traditional scripting approaches into an engineering-first, parallel execution design, incorporating strict data contracts, cross-platform environment control wrappers, dynamic test data generation, and behavioral abstraction.
+A production-grade, highly optimized API test automation framework built with Robot Framework targeting the Restful-Booker platform. This architecture transitions traditional scripting approaches into a highly maintainable, object-oriented framework layout, incorporating strict data contracts, cross-platform environment control wrappers, dynamic test data generation, and behavioral abstraction.
 
 ---
 
